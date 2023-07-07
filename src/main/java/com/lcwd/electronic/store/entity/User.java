@@ -17,7 +17,6 @@ public class User {
      *ApiNotes: User Entity
      */
 
-
     @Id
    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userId;
