@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,8 +33,8 @@ public class UserController {
      * @param :userDto
      * @return:Userdto1
      */
-    @PostMapping
-    public ResponseEntity<UserDto>createUser(@RequestBody UserDto userDto){
+    @PostMapping      //andar me @Valid annotation validation k liye lagae hai,kyoki yahi datacreate hoga
+    public ResponseEntity<UserDto>createUser(@Valid @RequestBody UserDto userDto){
         logger.info(" Before createdUser in controller :="+ userDto);
 
         UserDto userDto1=userService.createdUser(userDto);
@@ -50,7 +52,7 @@ public class UserController {
     @PutMapping("/{userId}")
 public ResponseEntity<UserDto>updateUser(
         @PathVariable("userId") String userId,
-        @RequestBody UserDto userDto
+        @Valid @RequestBody UserDto userDto //request body k aage lga  de validation
 ) {
         logger.info(" Before updateddUser in controller :="+ userDto);
 
