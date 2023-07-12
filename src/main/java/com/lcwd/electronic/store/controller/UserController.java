@@ -1,6 +1,7 @@
 package com.lcwd.electronic.store.controller;
 
 import com.lcwd.electronic.store.dto.ApiResponseMessage;
+import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.UserDto;
 import com.lcwd.electronic.store.service.UserService;
 import com.lcwd.electronic.store.service.impl.UserServiceImpl;
@@ -88,9 +89,14 @@ public ResponseEntity<ApiResponseMessage>deleteUser(@PathVariable String  userId
      * @return
      */
     @GetMapping
- public ResponseEntity<List<UserDto>> getAllUsers() {
+ public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
+         @RequestParam(value="pageNumber",defaultValue = "0",required=false) int pageNumber,
+         @RequestParam(value="pageSize",defaultValue="10",required = false) int pageSize,
+         @RequestParam(value="sortBy",defaultValue = "name",required=false) String  sortBy,
+         @RequestParam(value="sortDir",defaultValue="10",required = false) String sortDir
+    ) {
         logger.info(" After getAllUser in controller  ");
-        return new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUser(pageNumber,pageSize,sortBy,sortDir),HttpStatus.OK);
  }
 
     //get single
@@ -120,10 +126,10 @@ public ResponseEntity<ApiResponseMessage>deleteUser(@PathVariable String  userId
         }
 
     /**
-     * api notes:custom methods searchUser
-     * @param keywords
-     * @return
-     */
+    * api notes:custom methods searchUser
+   * @param keywords
+   * @return
+    */
     //search user
             @GetMapping("/search/{keywords}")
             public ResponseEntity<List<UserDto>> searchUser(@PathVariable String keywords) {
