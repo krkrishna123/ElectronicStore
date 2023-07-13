@@ -1,6 +1,6 @@
 package com.lcwd.electronic.store.service.impl;
 
-import com.lcwd.electronic.store.exception.BadApiRequest;
+import com.lcwd.electronic.store.exception.BadApiRequestException;
 import com.lcwd.electronic.store.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,21 +30,24 @@ public class FileServiceImpl implements FileService {
 
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileNameWithExtension = filename + extension;
-        String fullPathWithFileName = path + File.separator + fileNameWithExtension;
+        String fullPathWithFileName = path + fileNameWithExtension;
+
+        logger.info("full image page path:{} ",fullPathWithFileName);
         if (extension.equalsIgnoreCase(".png") || fileNameWithExtension.equalsIgnoreCase(".jpg") || extension.equalsIgnoreCase(".jpeg"))
         {
 //file save
+            logger.info("file extension is {} ",extension);
        File folder=new File(path) ;
        if(!folder.exists()){
            //create the folder
-           folder.mkdirs();
+           folder.mkdirs();//mkdirs becz multiple folders
        }
        //upload
             Files.copy(file.getInputStream(), Paths.get(fullPathWithFileName));
 
 return fileNameWithExtension;
         }else{
-            throw new BadApiRequest("file with this "+extension +"not allowed !!");
+            throw new BadApiRequestException("file with this "+extension +"not allowed !!");
         }
 
     }

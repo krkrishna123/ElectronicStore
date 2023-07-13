@@ -1,19 +1,24 @@
 package com.lcwd.electronic.store.controller;
 
 import com.lcwd.electronic.store.dto.ApiResponseMessage;
+import com.lcwd.electronic.store.dto.ImageResponse;
 import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.UserDto;
+import com.lcwd.electronic.store.service.FileService;
 import com.lcwd.electronic.store.service.UserService;
 import com.lcwd.electronic.store.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -29,6 +34,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FileService fileService;
+    
+    @Value("${user.profile.image.path}")
+    private String imageUploadPath;
+    
     /**
      * api notes:create User
      * @param :userDto
@@ -134,8 +145,21 @@ public ResponseEntity<ApiResponseMessage>deleteUser(@PathVariable String  userId
             @GetMapping("/search/{keywords}")
             public ResponseEntity<List<UserDto>> searchUser(@PathVariable String keywords) {
 
-                logger.info(" After searchUser by keywords in controller  "+ keywords);
+                logger.info(" After searchUser by keywords in controller  " + keywords);
                 return new ResponseEntity<>(userService.searchUser(keywords), HttpStatus.OK);
+            }
+            //upload image user
+    @PostMapping("/image/{userId}")
+    public ResponseEntity<ImageResponse>uploadUserImage(@RequestParam("userImage") MultipartFile image,@PathVariable String userId) throws IOException {
+     String imageName=fileService.uploadFile(image,imageUploadPath);
+     UserDto user=userService.getUserById(userId);
+     user.setImageName(imageName);
+        userService.updateUser(user, userId);
+
+        ImageResponse imageResponse= ImageResponse.builder().imageName(imageName).success(true).status(HttpStatus.CREATED).build();
+     return new ResponseEntity<>(imageResponse,HttpStatus.CREATED);
+
+    //service user image
 
 
             }}
