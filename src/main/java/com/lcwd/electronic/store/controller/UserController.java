@@ -154,6 +154,14 @@ public ResponseEntity<ApiResponseMessage>deleteUser(@PathVariable String  userId
                 return new ResponseEntity<>(userService.searchUser(keywords), HttpStatus.OK);
             }
             //upload image user
+
+    /**
+     * Apinotes:upload Image by postman by help userId at url
+     * @param image
+     * @param userId
+     * @return :status created
+     * @throws IOException
+     */
     @PostMapping("/image/{userId}")
     public ResponseEntity<ImageResponse>uploadUserImage(@RequestParam("userImage") MultipartFile image,@PathVariable String userId) throws IOException {
         String imageName = fileService.uploadFile(image, imageUploadPath);
@@ -165,6 +173,13 @@ public ResponseEntity<ApiResponseMessage>deleteUser(@PathVariable String  userId
         return new ResponseEntity<>(imageResponse, HttpStatus.CREATED);
     }
     //serve  user image
+
+    /**
+     * Apinotes:fetching Image by give UserId at the URL
+     * @param userId
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/image/{userId}")
 public void serveUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException {
   //
