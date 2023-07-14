@@ -4,6 +4,7 @@ import com.lcwd.electronic.store.dto.ApiResponseMessage;
 import com.lcwd.electronic.store.dto.ImageResponse;
 import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.UserDto;
+import com.lcwd.electronic.store.entity.User;
 import com.lcwd.electronic.store.service.FileService;
 import com.lcwd.electronic.store.service.UserService;
 import com.lcwd.electronic.store.service.impl.UserServiceImpl;
@@ -12,13 +13,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -151,15 +156,26 @@ public ResponseEntity<ApiResponseMessage>deleteUser(@PathVariable String  userId
             //upload image user
     @PostMapping("/image/{userId}")
     public ResponseEntity<ImageResponse>uploadUserImage(@RequestParam("userImage") MultipartFile image,@PathVariable String userId) throws IOException {
-     String imageName=fileService.uploadFile(image,imageUploadPath);
-     UserDto user=userService.getUserById(userId);
-     user.setImageName(imageName);
-        userService.updateUser(user, userId);
+        String imageName = fileService.uploadFile(image, imageUploadPath);
+        UserDto user = userService.getUserById(userId);
+        user.setImageName(imageName);
+        UserDto userDto = userService.updateUser(user, userId);
 
-        ImageResponse imageResponse= ImageResponse.builder().imageName(imageName).success(true).status(HttpStatus.CREATED).build();
-     return new ResponseEntity<>(imageResponse,HttpStatus.CREATED);
+        ImageResponse imageResponse = ImageResponse.builder().imageName(imageName).success(true).status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(imageResponse, HttpStatus.CREATED);
+    }
+    //serve  user image
+    @GetMapping("/image/{userId}")
+public void serveUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException {
+  //
+        UserDto user = userService.getUserById(userId);
 
-    //service user image
+        logger.info("User image name:{}",user.getImageName());
 
+        InputStream resource = fileService.getResource(imageUploadPath, user.getImageName());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource,response.getOutputStream());
 
-            }}
+    }
+
+            }
