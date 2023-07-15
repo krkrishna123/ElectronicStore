@@ -23,7 +23,7 @@ public class CategoryDto {
    @Min(value=4,message="title must be of minimum 4 character !!! ")
     private String title;
 
-   @NotBlank(message="Description required !!!")
+  @NotBlank(message="Description required !!!")
     private String description;
 
 

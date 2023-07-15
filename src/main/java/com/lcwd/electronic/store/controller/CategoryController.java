@@ -79,7 +79,7 @@ public class CategoryController {
     //getall
 
     /**
-     * apiNotes:Get All by pagination and sorting 
+     * apiNotes:Get All by pagination and sorting
      * @param pageNumber
      * @param pageSize
      * @param sortBy
