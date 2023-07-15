@@ -17,7 +17,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
-     * auhor's:krishna
+     * auhor's name :krishna
      * @param Category related all controllerApi
      * @return
      */
@@ -25,7 +25,7 @@ public class CategoryController {
     //create
 
     /**
-     * apinotes:createCategory
+     * api notes:createCategory
      * @param categoryDto
      * @return
      */
