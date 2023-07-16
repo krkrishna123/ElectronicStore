@@ -30,7 +30,7 @@ public class CategoryController {
     //create
 
     /**
-     * api notes:createCategory
+     * Api note:Create category
      * @param categoryDto
      * @return
      */
