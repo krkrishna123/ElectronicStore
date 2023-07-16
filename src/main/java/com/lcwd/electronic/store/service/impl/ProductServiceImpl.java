@@ -1,12 +1,14 @@
 package com.lcwd.electronic.store.service.impl;
 
 import com.lcwd.electronic.store.dto.CategoryDto;
+import com.lcwd.electronic.store.dto.ImageResponse;
 import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.ProductDto;
 import com.lcwd.electronic.store.entity.Product;
 import com.lcwd.electronic.store.exception.ResourceNotFoundException;
 import com.lcwd.electronic.store.helper.Helper;
 import com.lcwd.electronic.store.repository.ProductRepository;
+import com.lcwd.electronic.store.service.FileService;
 import com.lcwd.electronic.store.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.UUID;
@@ -27,6 +34,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ModelMapper mapper;
+
+
 
     @Override
     public ProductDto create(ProductDto productDto) {
@@ -56,6 +65,7 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(productDto.getQuantity());
         product.setLive(productDto.isLive());
         product.setStock(productDto.isStock());
+        product.setProductImageName(productDto.getProductImageName());
         //save the entity
         Product updatedProduct = productRepository.save(product);
 
@@ -103,4 +113,6 @@ public class ProductServiceImpl implements ProductService {
         return Helper.getPageableResponse(page, ProductDto.class);
 
     }
+
+
 }
