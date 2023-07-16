@@ -165,7 +165,7 @@ public ResponseEntity<PageableResponse<ProductDto>>getAll(
             @PathVariable String productId,
             @RequestParam("productImage") MultipartFile image
     ) throws IOException {
-
+        logger.info("uploading image is  going on below  in Productcontroller ");
         String fileName = fileService.uploadFile(image, imagePath);
         ProductDto productDto = productService.get(productId);
         productDto.setProductImageName(fileName);
@@ -177,6 +177,7 @@ public ResponseEntity<PageableResponse<ProductDto>>getAll(
 
     @GetMapping("/image/{productId}")
     public void serveProductImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
+        logger.info("uploading image is  going on below  in Productcontroller by ProductId ");
         ProductDto productDto = productService.get(productId);
         InputStream resource = fileService.getResource(imagePath,productDto.getProductImageName());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
