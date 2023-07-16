@@ -160,6 +160,14 @@ public ResponseEntity<PageableResponse<ProductDto>>getAll(
             return new ResponseEntity<>(pageableResponse, HttpStatus.OK);
         }
     //upload  Image
+
+    /**
+     * apiNotes:Imageuploading Api
+     * @param productId
+     * @param image
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/image/{productId}")
     public ResponseEntity<ImageResponse>uploadProductImage(
             @PathVariable String productId,
@@ -175,6 +183,12 @@ public ResponseEntity<PageableResponse<ProductDto>>getAll(
     }
     //serve image in product
 
+    /**
+     * ApiNotes:image uploaded by productId
+     * @param productId
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/image/{productId}")
     public void serveProductImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
         logger.info("uploading image is  going on below  in Productcontroller by ProductId ");
