@@ -20,6 +20,13 @@ public class ProductController {
     private ProductService productService;
     private static Logger logger=  LoggerFactory.getLogger( ProductController.class);
     //create
+
+    /**
+     * Authors:Krishna
+     * ApiNotes:Create
+     * @param productDto
+     * @return
+     */
     @PostMapping
    public ResponseEntity<ProductDto>createProduct(@RequestBody ProductDto productDto){
         logger.info(" Before initiated createdProduct in controller :="+ productDto);
@@ -28,6 +35,13 @@ public class ProductController {
 return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
    }
     //update
+
+    /**
+     * ApiNotes:update
+     * @param productId
+     * @param productDto
+     * @return
+     */
     @PutMapping("/{productId}")
     public ResponseEntity<ProductDto>updateProduct(@PathVariable String productId ,@RequestBody ProductDto productDto) {
         logger.info(" Before initiated updateProduct in controller :="+ productId);
@@ -36,6 +50,12 @@ return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
         return new ResponseEntity<>(updateProduct, HttpStatus.OK);
     }
     //delete
+
+    /**
+     * ApiNotes:delete
+     * @param productId
+     * @return
+     */
     @DeleteMapping("/{productId}")
     public ResponseEntity<ApiResponseMessage>delete(@PathVariable String productId){
         logger.info(" Before initiated DeleteProduct in controller :="+ productId);
@@ -45,6 +65,12 @@ return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
         return new ResponseEntity<>(responseMessage,HttpStatus.OK);
     }
     //get single
+
+    /**
+     * apiNotes:get by id
+     * @param productId
+     * @return
+     */
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDto>getProduct(@PathVariable String productId ) {
         logger.info(" Before initiated get ProductById in controller :="+ productId);
@@ -53,6 +79,15 @@ return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
         return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
     //get all
+
+    /**
+     * Apinots:getAll pagination shorting
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping
 public ResponseEntity<PageableResponse<ProductDto>>getAll(
             @RequestParam(value="pageNumber",defaultValue = "0",required=false) int pageNumber,
@@ -66,6 +101,15 @@ public ResponseEntity<PageableResponse<ProductDto>>getAll(
     }
     //get all live
     // '/products/live'
+
+    /**
+     * ApiNotes:Live
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping("/live")
     public ResponseEntity<PageableResponse<ProductDto>>getAllLive(
             @RequestParam(value="pageNumber",defaultValue = "0",required=false) int pageNumber,
@@ -78,6 +122,16 @@ public ResponseEntity<PageableResponse<ProductDto>>getAll(
         return new ResponseEntity<>(pageableResponse, HttpStatus.OK);
     }
         //search all
+
+    /**
+     * apiNotes:search
+     * @param query
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
         @GetMapping("/search/{query}")
         public ResponseEntity<PageableResponse<ProductDto>>searchProduct(
                 @PathVariable String query,
