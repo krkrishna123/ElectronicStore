@@ -151,7 +151,9 @@ public ResponseEntity<PageableResponse<CategoryDto>>getAll(
             @PathVariable String categoryId,
             @PathVariable String productId
     ){
+        logger.info(" Before initiated update product wit Category in controller "+ categoryId);
         ProductDto productDto = productService.updateCategory(productId, categoryId);
+        logger.info(" after initiated update product wit Category in controller "+ categoryId);
         return new ResponseEntity<>(productDto,HttpStatus.OK);
     }
     //get products of category
