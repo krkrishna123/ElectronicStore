@@ -138,5 +138,27 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public ProductDto updateCategory(String productId, String categoryId) {
+        //product fetch
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("product of given id not present !!!"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category of given id is not found !!!"));
+        product.setCategory(category);
+        Product saveProduct = productRepository.save(product);
+
+        return mapper.map(saveProduct,ProductDto.class);
+    }
+
+
+    @Override
+    public PageableResponse<ProductDto> getAllOfCategory(String categoryId, int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("category not found with given Id !! "));
+        Sort sort=(sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
+        Pageable pageable=PageRequest.of(pageNumber,pageSize,sort);
+
+        Page<Product> page = productRepository.findByCategory(category,pageable);
+        return Helper.getPageableResponse(page,ProductDto.class);
+    }
+
 
 }
