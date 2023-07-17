@@ -4,9 +4,11 @@ import com.lcwd.electronic.store.dto.CategoryDto;
 import com.lcwd.electronic.store.dto.ImageResponse;
 import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.ProductDto;
+import com.lcwd.electronic.store.entity.Category;
 import com.lcwd.electronic.store.entity.Product;
 import com.lcwd.electronic.store.exception.ResourceNotFoundException;
 import com.lcwd.electronic.store.helper.Helper;
+import com.lcwd.electronic.store.repository.CategoryRepository;
 import com.lcwd.electronic.store.repository.ProductRepository;
 import com.lcwd.electronic.store.service.FileService;
 import com.lcwd.electronic.store.service.ProductService;
@@ -35,7 +37,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ModelMapper mapper;
 
-
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public ProductDto create(ProductDto productDto) {
@@ -111,6 +114,27 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> page=productRepository.findByTitleContaining(subTitle,pageable);
 
         return Helper.getPageableResponse(page, ProductDto.class);
+
+    }
+
+    @Override
+    public ProductDto createWithCategory(ProductDto productDto, String categoryId) {
+        //fetch the category form Db:
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("category not found with given Id !! "));
+
+        Product product = mapper.map(productDto, Product.class);
+
+        //product id
+        String productId= UUID.randomUUID().toString();
+        product.setProductId(productId);//automatic dega
+
+        //added date
+        product.setAddedDate(new Date());//automatic dega
+        product.setProductId(productId);
+        Product saveProduct = productRepository.save(product);
+
+        return mapper.map(saveProduct ,ProductDto.class);
+
 
     }
 

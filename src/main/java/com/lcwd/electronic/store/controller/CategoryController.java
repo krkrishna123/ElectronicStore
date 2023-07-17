@@ -3,7 +3,9 @@ package com.lcwd.electronic.store.controller;
 import com.lcwd.electronic.store.dto.ApiResponseMessage;
 import com.lcwd.electronic.store.dto.CategoryDto;
 import com.lcwd.electronic.store.dto.PageableResponse;
+import com.lcwd.electronic.store.dto.ProductDto;
 import com.lcwd.electronic.store.service.CategoryService;
+import com.lcwd.electronic.store.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductService productService;
 
     private static Logger logger=  LoggerFactory.getLogger( CategoryController.class);
     /**
@@ -115,7 +120,15 @@ public ResponseEntity<PageableResponse<CategoryDto>>getAll(
         logger.info(" after operation of get single in CategoryController " + categoryId);
         return ResponseEntity.ok(categoryDto);
     }
-
+//create prodduct with category
+    @PostMapping("/{categoryId}/products")
+    public ResponseEntity<ProductDto>createProductWithCategory(
+            @PathVariable("categoryId") String categoryId,
+            @RequestBody ProductDto dto
+    ){
+        ProductDto productWithCategory = productService.createWithCategory(dto, categoryId);
+        return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
+    }
 
 
 }

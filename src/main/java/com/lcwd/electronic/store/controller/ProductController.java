@@ -197,4 +197,6 @@ public ResponseEntity<PageableResponse<ProductDto>>getAll(
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(resource,response.getOutputStream());
 
-    }}
+    }
+
+}

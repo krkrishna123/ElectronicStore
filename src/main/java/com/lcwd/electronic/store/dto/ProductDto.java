@@ -1,5 +1,6 @@
 package com.lcwd.electronic.store.dto;
 
+import com.lcwd.electronic.store.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,4 +36,5 @@ public class ProductDto {
 
     private String productImageName;
 
+    private CategoryDto category;
 }
