@@ -153,6 +153,16 @@ public ResponseEntity<PageableResponse<CategoryDto>>getAll(
         return new ResponseEntity<>(productDto,HttpStatus.OK);
     }
     //get products of category
+
+    /**
+     * api notes:get products of category
+     * @param categoryId
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping("/{categoryId}/products")
     public ResponseEntity<PageableResponse<ProductDto>>getProductOfCategory(
             @PathVariable String categoryId,
