@@ -133,7 +133,9 @@ public ResponseEntity<PageableResponse<CategoryDto>>getAll(
             @PathVariable("categoryId") String categoryId,
             @RequestBody ProductDto dto
     ){
+        logger.info(" Before initiated create product wit Category in controller :="+ categoryId);
         ProductDto productWithCategory = productService.createWithCategory(dto, categoryId);
+        logger.info(" After initiated create product wit Category in controller :="+ categoryId);
         return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
     }
 //update category of product
