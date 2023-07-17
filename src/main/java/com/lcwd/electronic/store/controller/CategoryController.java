@@ -177,7 +177,9 @@ public ResponseEntity<PageableResponse<CategoryDto>>getAll(
 
 
     ){
+        logger.info(" Before initiated get and sorting pagination in product with Category in controller "+ categoryId);
         PageableResponse<ProductDto> response = productService.getAllOfCategory(categoryId,pageNumber,pageSize,sortBy,sortDir);
-     return new ResponseEntity<>(response,HttpStatus.OK);
+        logger.info(" After initiated get and sorting pagination in product with Category in controller "+ categoryId);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }
