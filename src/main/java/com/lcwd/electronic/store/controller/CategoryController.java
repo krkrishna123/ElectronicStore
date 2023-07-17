@@ -137,6 +137,13 @@ public ResponseEntity<PageableResponse<CategoryDto>>getAll(
         return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
     }
 //update category of product
+
+    /**
+     * api notes:update category of product
+     * @param categoryId
+     * @param productId
+     * @return
+     */
     @PutMapping("/{categoryId}/products/{productId}")
     public ResponseEntity<ProductDto>updateCategoryOfProduct(
             @PathVariable String categoryId,
