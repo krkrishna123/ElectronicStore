@@ -67,16 +67,14 @@ public void updateUserTest(){
         String userId="dhekljdjl";
         UserDto userDto=UserDto.builder()
                 .name("Krishna Kumar")
-                //.email("krkrishna18740@gmail.com")
                 .about("This is testing for UpdateUser Method")
                 .gender("Male")
                 .imageName("xyz.png")
-                //   .password("lcwd")
                 .build();
         Mockito.when(userRepository.findById(Mockito.anyString())).thenReturn(Optional.of(user));
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
        UserDto updateUser = userService.updateUser(userDto, userId);
-      // UserDto updateUser=mapper.map(user,UserDto.class);
+
        System.out.println(updateUser.getName());
        System.out.println(updateUser.getImageName());
        Assertions.assertNotNull(userDto);
