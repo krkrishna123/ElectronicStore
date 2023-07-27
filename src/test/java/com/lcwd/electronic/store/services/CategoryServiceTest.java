@@ -42,9 +42,9 @@ public void createCategoryTest(){
 
     Mockito.when(categoryRepository.save(Mockito.any())).thenReturn(category);
     CategoryDto category1 = categoryService.create(mapper.map(category, CategoryDto.class));
-    System.out.println(category1.getTitle());
+    System.out.println(category1.getCoverImage());
     Assertions.assertNotNull(category1);
-    Assertions.assertEquals("Krishna",category1.getTitle());
+    Assertions.assertEquals("krishna.png",category1.getCoverImage());
 
 }
 
