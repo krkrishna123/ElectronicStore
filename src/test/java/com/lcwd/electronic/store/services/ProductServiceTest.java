@@ -50,6 +50,7 @@ private ProductRepository productRepository;
         ProductDto product1 = productService.create(mapper.map(product, ProductDto.class));
         System.out.println(product1.getTitle());
         Assertions.assertNotNull(product1);
+        
         Assertions.assertEquals("Car",product1.getTitle());
 
     }
