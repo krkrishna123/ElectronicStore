@@ -10,6 +10,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CategoryDto {
 
     private String categoryId;
