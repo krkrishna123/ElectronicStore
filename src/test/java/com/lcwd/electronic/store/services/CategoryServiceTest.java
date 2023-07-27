@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Optional;
+
 @SpringBootTest
 public class CategoryServiceTest {
 
@@ -47,6 +49,24 @@ public void createCategoryTest(){
     Assertions.assertEquals("krishna.png",category1.getCoverImage());
 
 }
+    @Test
+    public void updateCategoryTest(){
+        String categoryId="dhekljdjl";
+        CategoryDto categoryDto=CategoryDto.builder()
+                .title("developer")
+                .description("This test case for update category")
+                .coverImage("xyz.png")
+                .build();
+        Mockito.when(categoryRepository.findById(Mockito.anyString())).thenReturn(Optional.of(category));
+        Mockito.when(categoryRepository.save(Mockito.any())).thenReturn(category);
+        CategoryDto updateCategory = categoryService.update(categoryDto, categoryId);
 
+        System.out.println(updateCategory.getTitle());
+        System.out.println(updateCategory.getCoverImage());
+        Assertions.assertNotNull(categoryDto);
+        Assertions.assertEquals(categoryDto.getTitle(),updateCategory.getTitle(),"Name is not validated");
+
+
+    }
     }
 
