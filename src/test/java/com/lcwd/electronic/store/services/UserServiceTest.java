@@ -12,14 +12,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.sql.SQLOutput;
 import java.util.Optional;
 
 
-//@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class UserServiceTest {
+
+    //test me kahi bhi data base se interact nii ho rahi hai,yaha insertion nii ho rha hai
+    //create me data insert hota hai
+
     @MockBean
     private UserRepository userRepository;
 
@@ -74,12 +75,21 @@ public void updateUserTest(){
         Mockito.when(userRepository.findById(Mockito.anyString())).thenReturn(Optional.of(user));
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
        UserDto updateUser = userService.updateUser(userDto, userId);
+     //  UserDto updatedUser = mapper.map(user,UserDto.class);
 
        System.out.println(updateUser.getName());
        System.out.println(updateUser.getImageName());
        Assertions.assertNotNull(userDto);
        Assertions.assertEquals(userDto.getName(),updateUser.getName(),"Name is not validated");
+//multiple assertion valid.......
 
+}
+@Test
+public void deleteUserTest(){
+   String userid="userIdabc" ;
+   Mockito.when(userRepository.findById("userIdabc")).thenReturn(Optional.of(user));
+   userService.deleteUser(userid);
+   Mockito.verify(userRepository,Mockito.times(1)).delete(user);
 
 }
 }
