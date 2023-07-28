@@ -1,5 +1,6 @@
 package com.lcwd.electronic.store.services;
 
+import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.UserDto;
 import com.lcwd.electronic.store.entity.User;
 import com.lcwd.electronic.store.repository.UserRepository;
@@ -12,6 +13,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.*;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -90,6 +95,39 @@ public void deleteUserTest(){
    Mockito.when(userRepository.findById("userIdabc")).thenReturn(Optional.of(user));
    userService.deleteUser(userid);
    Mockito.verify(userRepository,Mockito.times(1)).delete(user);
+}
+@Test
+public void getAllUsersTest(){
+   User user1= User.builder()
+            .name("Karan")
+            .email("karan34@gmail.com")
+            .about("This is testing for CreateUser Method")
+            .gender("Male")
+            .imageName("kks.png")
+            .password("lcwd")
+            // roles(Set.of(role))
+            .build();
+   User user2= User.builder()
+            .name("dilip")
+            .email("dk58@gmail.com")
+            .about("This is testing for CreateUser Method")
+            .gender("Male")
+            .imageName("dk.png")
+            .password("lcwd")
+            // roles(Set.of(role))
+            .build();
+
+        List<User> userList= Arrays.asList(user,user1,user2);
+
+        Page<User> page=new PageImpl<>(userList);
+        Mockito.when(userRepository.findAll((Pageable)Mockito.any())).thenReturn(page);
+
+//       Sort sort=Sort.by("name").ascending();
+//        Pageable pageable= PageRequest.of( 1, 2, sort);
+//
+        PageableResponse<UserDto> allUser=userService.getAllUser(1,2,"name","asc");
+        Assertions.assertEquals(3,allUser.getContent().size());
 
 }
+
 }
