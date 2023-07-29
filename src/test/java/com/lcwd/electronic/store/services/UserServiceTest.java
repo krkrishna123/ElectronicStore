@@ -129,5 +129,16 @@ public void getAllUsersTest(){
         Assertions.assertEquals(3,allUser.getContent().size());
 
 }
+@Test
+public void getUserByIdTest(){
+        String userId="userIdTest";
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        //actual call of service method
+    UserDto userDto = userService.getUserById(userId);
+    Assertions.assertNotNull(userDto);
+    Assertions.assertEquals(user.getName(),userDto.getName(),"Name not matched !!!");
+
+}
 
 }
