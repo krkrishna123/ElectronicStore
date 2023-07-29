@@ -101,7 +101,7 @@ public void getAllUsersTest(){
    User user1= User.builder()
             .name("Karan")
             .email("karan34@gmail.com")
-            .about("This is testing for CreateUser Method")
+            .about("This is testing for GetAllUser Method")
             .gender("Male")
             .imageName("kks.png")
             .password("lcwd")
@@ -110,7 +110,7 @@ public void getAllUsersTest(){
    User user2= User.builder()
             .name("dilip")
             .email("dk58@gmail.com")
-            .about("This is testing for CreateUser Method")
+            .about("This is testing for getAllUser Method")
             .gender("Male")
             .imageName("dk.png")
             .password("lcwd")
@@ -148,6 +148,40 @@ public void getUserByEmailTest(){
       Assertions.assertNotNull(userDto);
       Assertions.assertEquals(user.getEmail(),userDto.getEmail(),"Email not matched");
 
+}
+@Test
+public void searchUserTest(){
+    User user1= User.builder()
+            .name("Prafulla")
+            .email("pk67@gmail.com")
+            .about("This is testing for searchUserTest Method")
+            .gender("Male")
+            .imageName("pkf.png")
+            .password("lcwd")
+            // roles(Set.of(role))
+            .build();
+    User user2= User.builder()
+            .name("sindhe")
+            .email("Sinde34@gmail.com")
+            .about("This is testing for searchUser Method")
+            .gender("Male")
+            .imageName("Suiu.png")
+            .password("lcwd")
+            // roles(Set.of(role))
+            .build();
+    User user3= User.builder()
+            .name("Pankaj")
+            .email("pkj34@gmail.com")
+            .about("This is testing for CreateUser Method")
+            .gender("Male")
+            .imageName("kks.png")
+            .password("lcwd")
+            // roles(Set.of(role))
+            .build();
+    String keywords="kumar";
+    Mockito.when(userRepository.findByNameContaining(keywords)).thenReturn(Arrays.asList(user,user1,user2,user3));
+    List<UserDto>userDtos=userService.searchUser(keywords);
+    Assertions.assertEquals(4,userDtos.size(),"size not matched !!");
 }
 
 }
