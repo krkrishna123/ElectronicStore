@@ -13,14 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
+import javax.print.attribute.standard.Media;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+//API(controller) ko test krne ka Best Tarika yahi used kare//
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,6 +41,8 @@ public class UserControllerTest {
     @Autowired
     private ModelMapper mapper;
 
+
+
     @Autowired
     private MockMvc mockMvc;
     @BeforeEach
@@ -41,7 +50,7 @@ public class UserControllerTest {
         // role=Role.builder().roleId("abc").roleName("NORMAL").build()  ;
 
         user = User.builder()
-                .name("Krishna")
+                .name("Krishna")//yaha jo bh niche tk de rahe uskko validation ko  dekhr rahe nii fail hoga test
                 .email("krishnakumar3454878@gmail.com")
                 .about("This is testing for CreateUser Method")
                 .gender("Male")
@@ -64,10 +73,26 @@ this.mockMvc.perform(
                 .accept(MediaType.APPLICATION_JSON))
 
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isCreated())//controller me created status code(201) isliye liye hai agar waha OK ho fail hoga test
                 .andExpect(jsonPath("$.name").exists());
 
 
+    }
+    @Test
+    public void updateUserTest() throws Exception {
+        // /users/{userId}+PUT request+json
+        String userId="123";
+        UserDto dto=this.mapper.map(user,UserDto.class);
+        Mockito.when(userService.updateUser(Mockito.any(),Mockito.anyString())).thenReturn(dto);
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put("/users/" +userId)
+                      //  .headers(HttpHeaders.AUTHORIZATION,"bearer..........")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertObjectToJsonString(user))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").exists());
     }
 private String convertObjectToJsonString(User user){
         try{
