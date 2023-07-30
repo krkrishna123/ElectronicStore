@@ -5,6 +5,7 @@ import com.lcwd.electronic.store.dto.UserDto;
 import com.lcwd.electronic.store.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -34,6 +35,8 @@ public interface UserService {
 
     //search user
     List<UserDto>searchUser(String keyword);
+
+    Optional<User> findUserByEmailOptional(String email);
 
     //other specific features
 }

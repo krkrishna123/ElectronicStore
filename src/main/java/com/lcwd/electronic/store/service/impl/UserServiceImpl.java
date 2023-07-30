@@ -25,6 +25,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -187,6 +188,12 @@ public class UserServiceImpl implements UserService {
         List<UserDto>dtoList=users.stream().map(user->entityToDto(user)).collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    @Override
+    public Optional<User> findUserByEmailOptional(String email) {
+        User user=userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found with given email id ."));
+        return Optional.empty();
     }
 
 }
