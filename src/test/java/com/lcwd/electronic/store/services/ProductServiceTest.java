@@ -1,7 +1,10 @@
 package com.lcwd.electronic.store.services;
 
+import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.ProductDto;
+import com.lcwd.electronic.store.dto.UserDto;
 import com.lcwd.electronic.store.entity.Product;
+import com.lcwd.electronic.store.entity.User;
 import com.lcwd.electronic.store.repository.ProductRepository;
 import com.lcwd.electronic.store.service.ProductService;
 import org.junit.jupiter.api.Assertions;
@@ -12,9 +15,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.Column;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -84,4 +92,39 @@ private ProductRepository productRepository;
         productService.delete(productid);
         Mockito.verify(productRepository,Mockito.times(1)).delete(product);
     }
+    @Test
+    public void getAllProductTest(){
+        Product product1= Product.builder()
+                .title("product")
+                .description("product for testing")
+                .productId("pk34")
+                .price(567)
+                .productImageName("pk.png")
+                .discountedPrice(345)
+                // roles(Set.of(role))
+                .build();
+        Product product2= Product.builder()
+                .title("product2")
+                .description("product2 for testing")
+                .productId("kak34")
+                .price(907)
+                .productImageName("kl.png")
+                .discountedPrice(234)
+                // roles(Set.of(role))
+                .build();
+
+        List<Product> productList= Arrays.asList(product1,product2);
+
+        Page<Product> page=new PageImpl<>(productList);
+        Mockito.when(productRepository.findAll((Pageable)Mockito.any())).thenReturn(page);
+
+//       Sort sort=Sort.by("name").ascending();
+//        Pageable pageable= PageRequest.of( 1, 2, sort);
+//
+        PageableResponse<ProductDto> allProduct=productService.getAll(1,2,"title","asc");
+        Assertions.assertEquals(2,allProduct.getContent().size());
+
+    }
+
+
 }
