@@ -125,6 +125,16 @@ private ProductRepository productRepository;
         Assertions.assertEquals(2,allProduct.getContent().size());
 
     }
+    @Test
+    public void getProductByIdTest(){
+        String productId="userIdTest";
+        Mockito.when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
+        //actual call of service method
+        ProductDto productDto = productService.get(productId);
+        Assertions.assertNotNull(productDto);
+        Assertions.assertEquals(product.getPrice(),productDto.getPrice(),"Name not matched !!!");
+
+    }
 
 }
