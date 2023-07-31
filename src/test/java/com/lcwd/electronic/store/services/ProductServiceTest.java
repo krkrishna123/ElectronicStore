@@ -77,4 +77,11 @@ private ProductRepository productRepository;
         Assertions.assertEquals(productDto.getTitle(), updateProduct.getTitle(), "Name is not validated");
 
     }
+    @Test
+    public void deleteProductTest(){
+        String productid="productIdabc" ;
+        Mockito.when(productRepository.findById("productIdabc")).thenReturn(Optional.of(product));
+        productService.delete(productid);
+        Mockito.verify(productRepository,Mockito.times(1)).delete(product);
+    }
 }
