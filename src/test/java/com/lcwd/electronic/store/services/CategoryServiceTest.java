@@ -68,5 +68,13 @@ public void createCategoryTest(){
 
 
     }
+    @Test
+    public void deleteCategoryTest(){
+        String categoryid="userIdabc" ;
+        Mockito.when(categoryRepository.findById("userIdabc")).thenReturn(Optional.of(category));
+        categoryService.delete(categoryid);
+        Mockito.verify(categoryRepository,Mockito.times(1)).delete(category);
+    }
+    
     }
 
