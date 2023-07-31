@@ -1,5 +1,6 @@
 package com.lcwd.electronic.store.helper;
 
+
 import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.UserDto;
 import com.lcwd.electronic.store.entity.User;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Helper {
-    public static <U,V>PageableResponse<V>getPageableResponse(Page<U> page,Class<V>type) {
+    public static <U,V> PageableResponse<V> getPageableResponse(Page<U> page, Class<V>type) {
         List<U> entity = page.getContent();
         List<V> dtoList = entity.stream().map(object -> new ModelMapper().map(object,type)).collect(Collectors.toList());
 

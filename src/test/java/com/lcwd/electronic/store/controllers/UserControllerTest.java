@@ -2,6 +2,7 @@ package com.lcwd.electronic.store.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lcwd.electronic.store.dto.PageableResponse;
 import com.lcwd.electronic.store.dto.UserDto;
 import com.lcwd.electronic.store.entity.User;
 import com.lcwd.electronic.store.service.UserService;
@@ -21,6 +22,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
 import javax.print.attribute.standard.Media;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -103,5 +107,36 @@ private String convertObjectToJsonString(User user){
         }
 }
 
+//get All user:testing
+    @Test
+    public void getAllUsersTest() throws Exception {
+        UserDto object1 = UserDto.builder().name("krishna").email("krishnakk18740@gmail.com").password("krishna").about("testing").build();
+        UserDto object2 = UserDto.builder().name("Raju").email("rk900@gmail.com").password("rjk").about("devloper").build();
+        UserDto object3 = UserDto.builder().name("Himanshu").email("hko234@gmail.com").password("hksqw").about("software").build();
+
+        PageableResponse<UserDto>pageableResponse=new PageableResponse<>();
+        pageableResponse.setContent(Arrays.asList(
+             object1,object2,object3
+        ));
+        pageableResponse.setLastPage(false);
+        pageableResponse.setPageSize(10);
+        pageableResponse.setPageNumber(100);
+       pageableResponse.setTotalElements(1000);
+//        String userId="123";
+//        UserDto dto=this.mapper.map(user,UserDto.class);
+        Mockito.when(userService.getAllUser(Mockito.anyInt(),Mockito.anyInt(),Mockito.anyString(),Mockito.anyString())).thenReturn(pageableResponse);
+
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get("/users" )
+                       // .headers(HttpHeaders.AUTHORIZATION,"Bearer.......")
+                        .contentType(MediaType.APPLICATION_JSON)
+                       // .content(convertObjectToJsonString(user))
+                        .accept(MediaType.APPLICATION_JSON)
+
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 
 }
