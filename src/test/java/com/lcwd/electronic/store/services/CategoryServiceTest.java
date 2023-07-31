@@ -117,7 +117,7 @@ public void createCategoryTest(){
         CategoryDto categoryDto = categoryService.get(categoryId);
         Assertions.assertNotNull(categoryDto);
         Assertions.assertEquals(category.getTitle(),categoryDto.getTitle(),"Name not matched !!!");
-
+        
     }
 
 
