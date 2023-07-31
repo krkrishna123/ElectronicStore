@@ -108,5 +108,18 @@ public void createCategoryTest(){
         Assertions.assertEquals(2,allCategory.getContent().size());
 
     }
+    @Test
+    public void getCategoryByIdTest(){
+        String categoryId="categoryIdTest";
+        Mockito.when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+
+        //actual call of service method
+        CategoryDto categoryDto = categoryService.get(categoryId);
+        Assertions.assertNotNull(categoryDto);
+        Assertions.assertEquals(category.getTitle(),categoryDto.getTitle(),"Name not matched !!!");
+
     }
+
+
+}
 
